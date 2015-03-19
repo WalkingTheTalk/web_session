@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="length" model="ir.config_parameter">
+            <field name="key">web_session.length</field>
+            <field name="value">02:00</field>
+        </record>
+    </data>
+</openerp>
