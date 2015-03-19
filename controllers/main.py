@@ -46,6 +46,7 @@ def _new_session_gc(session_store):
             cr = db.cursor()
             pool = pooler.get_pool(cr.dbname)
             param = pool['ir.config_parameter'].get_param(cr, SUPERUSER_ID, 'web_session.length')
+            cr.close()
             if param and len(param.split(':')) > 1 and int(param.split(':')[1]) != 0:
                 minutes = int(param.split(':')[1])
             if param and len(param.split(':')) != 0:
