@@ -29,7 +29,8 @@ import openerp
 from openerp import SUPERUSER_ID
 import openerp.http
 
-from openerp import pooler, sql_db
+from openerp import sql_db
+from openerp.modules.registry import RegistryManager
 from openerp import tools
 from pickle import dump, load, HIGHEST_PROTOCOL
 
@@ -44,7 +45,7 @@ def _new_session_gc(session_store):
         if session_data.get('db',None) != None:
             db = sql_db.db_connect(session_data['db'])
             cr = db.cursor()
-            pool = pooler.get_pool(cr.dbname)
+            pool = RegistryManager.get(cr.dbname)
             param = pool['ir.config_parameter'].get_param(cr, SUPERUSER_ID, 'web_session.length')
             cr.close()
             if param and len(param.split(':')) > 1 and int(param.split(':')[1]) != 0:
