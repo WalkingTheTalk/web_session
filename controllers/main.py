@@ -28,17 +28,22 @@ import time
 import openerp
 from openerp import SUPERUSER_ID
 import openerp.http
+import werkzeug
 
 from openerp import sql_db
 from openerp.modules.registry import RegistryManager
 from openerp import tools
 from pickle import dump, load, HIGHEST_PROTOCOL
+from openerp.addons.web.http import Controller, route, request
 
 def _new_session_gc(session_store):
     for fname in os.listdir(session_store.path):
         path = os.path.join(session_store.path, fname)
         f = open(path, 'rb')
-        session_data = load(f)
+        try:
+            session_data = load(f)
+        except:
+            session_data = {}
         f.close()
         minutes = 60
         hours = 24*7
@@ -55,8 +60,9 @@ def _new_session_gc(session_store):
                 if hours == 0:
                     hours = 1
         session_length = time.time() - 60*minutes*hours
+        last_access_time = os.path.getatime(path)
         try:
-            if os.path.getmtime(path) < session_length:
+            if last_access_time < session_length:
                 os.unlink(path)
         except OSError:
             pass
