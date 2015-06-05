@@ -41,7 +41,10 @@ def _new_session_gc(session_store):
         path = os.path.join(session_store.path, fname)
         f = open(path, 'rb')
         try:
-            session_data = load(f)
+            if f:
+                session_data = load(f)
+            else:
+                session_data = {}
         except:
             session_data = {}
         f.close()
