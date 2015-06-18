@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_users_tree_inherit_session" model="ir.ui.view">
+            <field name="name">res.users.tree.inherit.session</field>
+            <field name="model">res.users</field>
+            <field name="inherit_id" ref="base.view_users_tree"/>
+            <field name="arch" type="xml">
+                <field name="login_date" position="after">
+                    <field name="action_date"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

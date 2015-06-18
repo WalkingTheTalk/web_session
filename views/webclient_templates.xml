@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- vim:fdn=3:
+-->
+<openerp>
+    <data>
+        <template id="assets_common_session" inherit_id="web.assets_common">
+		  <xpath expr="//script[@src='/web/static/src/js/tour.js']" position="after">
+            <script type="text/javascript" src="/web_session/static/src/js/openerpframework.js"></script>
+          </xpath>
+        </template>
+    </data>
+</openerp>

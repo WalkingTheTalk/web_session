@@ -22,7 +22,23 @@
 #
 ##############################################################################
 
-import controllers
-import res_users
+from openerp.osv import fields, osv, expression
+from openerp.tools.translate import _
+from openerp import SUPERUSER_ID
+from datetime import datetime
+
+class res_users(osv.osv):
+    _inherit = "res.users"
+
+    _columns = {
+        'action_date': fields.datetime('Latest action', readonly=1)
+    }
+
+    def update_action_date(self, cr, uid, ids, context=None):
+        if context is None:
+            context = {}
+        return self.write(cr, SUPERUSER_ID, ids, {
+            'action_date': datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        }, context=context)
 
 # vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:

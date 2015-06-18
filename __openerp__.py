@@ -36,7 +36,12 @@ Web session length configuration.
     'website': 'http://www.its1.lv',
     'depends': ['web'],
     'data': [
+        'views/webclient_templates.xml',
+        'res_users_view.xml',
         'data/data.xml'
+    ],
+    'js': [
+        'static/src/js/openerpframework.js'
     ],
     'installable': True,
     'auto_install': False
