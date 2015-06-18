@@ -25,6 +25,7 @@
 import os
 import random
 import time
+from datetime import datetime
 import openerp
 from openerp import SUPERUSER_ID
 import openerp.http
@@ -40,21 +41,28 @@ def _new_session_gc(session_store):
     for fname in os.listdir(session_store.path):
         path = os.path.join(session_store.path, fname)
         f = open(path, 'rb')
-        try:
-            if f:
+        session_data = {}
+        if f:
+            try:
                 session_data = load(f)
-            else:
+            except:
                 session_data = {}
-        except:
-            session_data = {}
         f.close()
         minutes = 60
         hours = 24*7
+        last_access_time = os.path.getatime(path)
         if session_data.get('db',None) != None:
             db = sql_db.db_connect(session_data['db'])
             cr = db.cursor()
             pool = RegistryManager.get(cr.dbname)
             param = pool['ir.config_parameter'].get_param(cr, SUPERUSER_ID, 'web_session.length')
+            if session_data.get('uid',None) != None:
+                user = pool['res.users'].browse(cr, SUPERUSER_ID, session_data['uid'])
+                if hasattr(user, 'action_date') and user.action_date:
+                    act_date = datetime.strptime(user.action_date, '%Y-%m-%d %H:%M:%S').timetuple()
+                    act_access_time = time.mktime(act_date)
+                    if act_access_time > last_access_time:
+                        last_access_time = act_access_time
             cr.close()
             if param and len(param.split(':')) > 1 and int(param.split(':')[1]) != 0:
                 minutes = int(param.split(':')[1])
@@ -63,7 +71,6 @@ def _new_session_gc(session_store):
                 if hours == 0:
                     hours = 1
         session_length = time.time() - 60*minutes*hours
-        last_access_time = os.path.getatime(path)
         try:
             if last_access_time < session_length:
                 os.unlink(path)
