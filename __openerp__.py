@@ -29,15 +29,22 @@
     """
 Web session length configuration.
 ====================================================
+Session length is a period of time the user will stay logged in the system without any activity.
 
+You can configure Session Length in Settings -> Configuration -> General Settings. The format needs to be HH:MM.
+
+After pressing "Apply" the session length parameter value is saved in Settings -> Technical -> Parameters -> System Parameters with the key named "web_session.length".
+
+Users last activity datetime can be visible in Users list view (Settings -> Users -> Users) column "Latest action".
     """,
     'category': 'Tools',
     'author': 'ITS-1',
     'website': 'http://www.its1.lv',
-    'depends': ['web'],
+    'depends': ['web', 'base_setup'],
     'data': [
         'views/webclient_templates.xml',
         'res_users_view.xml',
+        'res_config_view.xml',
         'data/data.xml'
     ],
     'js': [

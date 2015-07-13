@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="view_general_configuration_web_session" model="ir.ui.view">
+            <field name="name">base.config.settings.web.session</field>
+            <field name="model">base.config.settings</field>
+            <field name="inherit_id" ref="base_setup.view_general_configuration"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form" position='inside'>
+                    <group>
+                        <label for="id" string="Session Length"/>
+                        <div>
+                            <div name="session_length">
+                                <field name="session_length" widget="float_time" class="oe_inline"/>
+                            </div>
+                        </div>
+                    </group>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>
